@@ -1,10 +1,17 @@
-import React, { ComponentType } from 'react';
+import React, { ComponentType, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { withLDProvider } from 'launchdarkly-react-client-sdk';
+import { useFlags, useLDClient, withLDProvider } from 'launchdarkly-react-client-sdk';
 import HelloWorld from './helloWorld';
 
 function App() {
+  const flags = useFlags();
+  const ldClient = useLDClient();
+
+  useEffect(() => {
+    ldClient?.identify({key: '632d8593dceb5d11abf32610'});
+  })
+
   return (
     <div className="App">
       <header className="App-header">
@@ -28,4 +35,10 @@ function App() {
 
 export default withLDProvider({
   clientSideID: '632d8593dceb5d11abf32610',
+  user: {
+    "key": "example_user",
+    "name": "Example user",
+    "email": "User@example.com"
+}
 })(App);
+
